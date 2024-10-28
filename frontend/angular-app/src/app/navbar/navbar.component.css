@@ -1,0 +1,12 @@
+.app-navbar {
+    background-color: black;
+    padding: 10px;
+    position: sticky;
+    overflow: hidden;
+    top: 0;
+}
+
+.active {
+    font-weight: bold;
+    color: #007bff;
+  }
