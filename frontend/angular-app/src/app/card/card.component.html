@@ -1,7 +1,23 @@
 <div class="card">
-    <h2>Card Title</h2>
-    <p>This is a card-like component with semi-transparent background.</p>
-    <app-button></app-button>
-  </div>
+  <h2>Card Title</h2>
+  <div class="image-container">
+    <p-toast />
+    <p-fileUpload 
+        name="fileUpload" 
+        url="http://localhost:8000/api/upload-image/" 
+        (onUpload)="onUpload($event)" 
+        [multiple]="true" 
+        accept="image/*" 
+        maxFileSize="1000000">
+            <ng-template pTemplate="content">
+                <ul *ngIf="upLoadedFiles.length">
+                    <li *ngFor="let file of upLoadedFiles">
+                        {{ file.name }} - {{ file.size }} bytes
+                    </li>
+                </ul>
+            </ng-template>
+    </p-fileUpload>
+</div>
+</div>
   
   

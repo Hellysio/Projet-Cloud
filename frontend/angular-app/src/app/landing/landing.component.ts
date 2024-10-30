@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, CardComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css'
 })

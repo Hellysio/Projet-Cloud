@@ -16,9 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls.static import static
+from django.conf import settings
 from api import views
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/send-info/',views.send_info, name='send_info'),
+    path('api/upload-image/',views.upload_image, name='upload_image'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,9 @@
 <div class="button1">
-<button mat-flat-button color="primary" (click)="getInfo()">Click here</button>
+    <p-button
+        pButton
+        pRipple
+        label="Click here"
+        (onClick)="getInfo()"/>
     <div *ngIf="info">
     {{ info }}
     </div>
