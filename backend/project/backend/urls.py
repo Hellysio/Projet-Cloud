@@ -23,8 +23,9 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/send-info/',views.send_info, name='send_info'),
-    path('api/upload-image/',views.upload_image, name='upload_image'),
+    path('api/send_info/', views.send_info, name='send_info'),
+    path('api/upload_image/', views.upload_image, name='upload_image'),
+    path('api/post_message/', views.post_message, name='post_message'),
 ]
 
 if settings.DEBUG:

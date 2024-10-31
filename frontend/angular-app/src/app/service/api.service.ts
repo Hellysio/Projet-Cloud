@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, Observable } from 'rxjs';
+import { error } from 'node:console';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,31 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   getInfo(): Observable<any> {
-    return this.http.get<any>(this.apiUrl + 'send-info/');
+    return this.http.get<any>(`${this.apiUrl}send_info/`);
   }
 
-  upload_image(): Observable<any> {
-    return this.http.post<any>(this.apiUrl + 'upload_image/', {});
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData(); 
+    formData.append('fileUpload', file); 
+
+    return this.http.post<any>(`${this.apiUrl}upload_image/`, formData).pipe(
+      catchError((error) => {
+        console.error('Error uploading file: ', error);
+        return error;
+      })
+    );
+  }
+
+  postMessage(): Observable<any> {
+    console.log ('api: ' + `${this.apiUrl}post_message/`)
+    const uploadData = new FormData();
+    uploadData.append('message', 'Hello from Angular!');
+
+    return this.http.post(`${this.apiUrl}post_message/`, uploadData).pipe(
+      catchError((error) => {
+        console.error('Error posting message: ', error);
+        return error;
+      })
+    );
   }
 }
