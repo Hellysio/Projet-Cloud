@@ -34,7 +34,7 @@ export class ButtonComponent {
     this.apiService.postMessage().subscribe(
       (response: any) => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Sent' });
-        console.log('Server response:', response); // Handle the server response
+        console.log('Server response:', response); 
       },
       (error: any) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Sending Failed' });

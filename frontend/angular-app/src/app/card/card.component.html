@@ -1,0 +1,33 @@
+<div class="card">
+    <h2>Card Title</h2>
+    <div class="image-container">
+        <p-toast />
+        <p-fileUpload 
+            name="fileUpload" 
+            url="http://localhost:8000/api/upload_image/" 
+            (onUpload)="UploadImage($event)" 
+            [multiple]="true" 
+            accept="image/*" 
+            maxFileSize="1000000">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="upLoadedFiles.length">
+                        <li *ngFor="let file of upLoadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                    </ul>
+                </ng-template>
+      </p-fileUpload>
+
+      <p-fieldset class="fieldset" legend="Description">
+            <p-progressSpinner 
+            *ngIf="showSpinner"        
+            styleClass="w-4rem h-4rem" 
+            strokeWidth="8" 
+            fill="var(--surface-ground)" 
+            animationDuration="2s" />
+            <div *ngIf="serverResponse" class="server-response">
+                <p> <strong>{{ serverResponse }}</strong></p>
+            </div>
+        </p-fieldset>
+    </div>
+</div>
