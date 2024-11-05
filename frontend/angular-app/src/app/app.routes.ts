@@ -6,6 +6,7 @@ import { FeaturesComponent } from './features/features.component';
 import { LandingComponent } from './landing/landing.component';
 
 export const routes: Routes = [
+    { path: '', redirectTo: '/landing', pathMatch: 'full' },
     { path: 'features', component: FeaturesComponent },
     { path: 'landing', component: LandingComponent },
 ];

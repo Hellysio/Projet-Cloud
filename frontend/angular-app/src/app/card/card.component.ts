@@ -8,14 +8,12 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
 import { HttpClient } from '@angular/common/http';
-
 import { error, info } from 'console';
-import { ButtonComponent } from "../button/button.component";
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonModule, FileUploadModule, FieldsetModule, ProgressSpinnerModule, ToastModule, ButtonComponent],
+  imports: [CommonModule, CardComponent, ButtonModule, FileUploadModule, FieldsetModule, ProgressSpinnerModule, ToastModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   providers: [MessageService]
@@ -41,7 +39,7 @@ export class CardComponent {
   );
   }
 
-  AfterUpload(event: any) {
+  onUpload(event: any) {
     console.log(event);
     console.log(event.originalEvent.body[0].generated_text);
     

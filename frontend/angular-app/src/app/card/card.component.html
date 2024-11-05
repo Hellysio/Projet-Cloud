@@ -1,11 +1,11 @@
 <div class="card">
-    <h2>Card Title</h2>
+    <h2 [ngStyle]="{color: 'var(--primary-color)'}">Select any image</h2>
     <div class="image-container">
         <p-toast />
         <p-fileUpload 
             name="fileUpload" 
             url="http://localhost:8000/api/upload_image/" 
-            (onUpload)="AfterUpload($event)" 
+            (onUpload)="onUpload($event)" 
             [multiple]="false" 
             accept="image/*" 
             maxFileSize="1000000">
