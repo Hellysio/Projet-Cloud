@@ -41,25 +41,21 @@ export class CardComponent {
   );
   }
 
-   UploadImage(event:any) {
-      this.showSpinner = true;
-      for (let file of event.files) {
-        this.formData.append('file', file);
-       
-        this.apiService.uploadImage(file).subscribe(
-        (response: any) => {
-          this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded'});
-          this.serverResponse = response[0].generated_text;
-          this.showSpinner = false;
-          console.log('Server response:', response[0].generated_text);
-        },
-        (error: any) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Message Sending Failed' });
-          this.showSpinner = false;
-          this.serverResponse = error[0].generated_text;
-          console.error('Error sending file: ', error);
-        }
-        );
-     }
-   }
+  AfterUpload(event: any) {
+    console.log(event);
+    console.log(event.originalEvent.body[0].generated_text);
+    
+    this.showSpinner = true;
+    
+    const randomTime = Math.floor(Math.random() * 2000); 
+    setTimeout(() => {
+        this.showSpinner = false; 
+        this.serverResponse = event.originalEvent.body[0].generated_text; 
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Success',
+            detail: 'File Uploaded'
+        });
+    }, randomTime);
+  }
 }

@@ -5,8 +5,8 @@
         <p-fileUpload 
             name="fileUpload" 
             url="http://localhost:8000/api/upload_image/" 
-            (onUpload)="UploadImage($event)" 
-            [multiple]="true" 
+            (onUpload)="AfterUpload($event)" 
+            [multiple]="false" 
             accept="image/*" 
             maxFileSize="1000000">
                 <ng-template pTemplate="content">
