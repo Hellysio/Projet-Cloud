@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: angular-app
+    build:
+      context: ./frontend/angular-app
+    image: angular-app-v1
+    ports:
+      - "9000:80" 
+    networks:
+      - app-network 
+
+networks:
+  app-network:
+    driver: bridge
