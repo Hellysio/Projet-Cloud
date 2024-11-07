@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 FROM nginx:stable
-COPY nginx.conf /etc/nginx/conf.d
-COPY --from=build /app/dist/angular-app /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d
+COPY --from=build /app/dist/angular-app/browser /usr/share/nginx/html
 
 EXPOSE 80
