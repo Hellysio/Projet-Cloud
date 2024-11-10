@@ -13,7 +13,7 @@ import { error, info } from 'console';
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonModule, FileUploadModule, FieldsetModule, ProgressSpinnerModule, ToastModule],
+  imports: [CommonModule, ButtonModule, FileUploadModule, FieldsetModule, ProgressSpinnerModule, ToastModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   providers: [MessageService]
@@ -31,6 +31,7 @@ export class CardComponent {
   getInfo() {
     this.apiService.getInfo().subscribe((data: any) => {
       this.info = data.message;
+      console.log("Able to reach the Django backend");
       console.log(this.info);
     }, 
     (error) => {

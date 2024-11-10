@@ -1,0 +1,8 @@
+FROM postgres:14
+
+ENV POSTGRES_DB=DescriptionDB
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_PASSWORD=postgres
+
+EXPOSE 5432
+

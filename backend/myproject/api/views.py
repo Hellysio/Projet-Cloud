@@ -1,13 +1,17 @@
 from django.utils import timezone 
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import UploadedFiles
 import requests
 
+@api_view(['GET'])
+def send_info(request):
+    return Response({"message": "Welcome to the Image Captioning API!"})
+
 @api_view(['POST'])
 def upload_image(request):
+    print("here")
     if 'fileUpload' not in request.FILES:
         return Response({"error": "No file provided."}, status=status.HTTP_400_BAD_REQUEST)
     
