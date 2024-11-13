@@ -8,6 +8,8 @@ services:
       - "9000:80" 
     networks:
       - app-network 
+    depends_on:
+      - db-master
 
   backend:
     container_name: django-app
@@ -22,26 +24,26 @@ services:
       - db-master
 
   db-master:
-    image: postgres:14
     build: 
       context: ./data/PostgreSQLdb/master
     container_name: db-master
     ports:
-      - "5433:5433"
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
       - app-network
 
   db-replica:
-    image: postgres:14
     build: 
       context: ./data/PostgreSQLdb/replica
     container_name: db-replica
+    environment:
+      REPLICATE_FROM: db-master
     depends_on:
       - db-master
     ports:
-      - "5434:5433"
+      - "5433:5432"
     volumes:
       - replica-data:/var/lib/postgresql/data
     networks:

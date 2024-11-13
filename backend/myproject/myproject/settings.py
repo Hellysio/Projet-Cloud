@@ -94,7 +94,7 @@ DATABASES = {
         'USER': 'myuser',
         'PASSWORD': 'postgres',
         'HOST': 'db-master',
-        'PORT': '5433',
+        'PORT': '5432',
     },
     'replica': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -102,7 +102,7 @@ DATABASES = {
         'USER': 'myuser',
         'PASSWORD': 'postgres',
         'HOST': 'db-replica',
-        'PORT': '5434',
+        'PORT': '5433',
     },
 }
 

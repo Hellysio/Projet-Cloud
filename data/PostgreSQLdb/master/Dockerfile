@@ -1,8 +1,14 @@
-FROM postgres:14
+FROM postgres:14.13
+
+WORKDIR /app
 
 ENV POSTGRES_DB=DescriptionDB
 ENV POSTGRES_USER=myuser
 ENV POSTGRES_PASSWORD=postgres
 
-EXPOSE 15433
+COPY /master.sh /app/master.sh
+RUN chmod +x /app/master.sh
+
+
+EXPOSE 5432
 
