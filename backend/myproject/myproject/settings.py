@@ -106,15 +106,6 @@ DATABASES = {
     },
 }
 
-def get_connection():
-    try:
-        connection = connections['default']
-        if connection.connection:
-            return connection
-    except OperationalError:
-        return connections['default']
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 

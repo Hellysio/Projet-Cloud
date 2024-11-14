@@ -24,20 +24,20 @@ services:
       - db-master
 
   db-master:
+    container_name: db-master
     build: 
       context: ./data/PostgreSQLdb/master
-    container_name: db-master
     ports:
       - "5432:5432"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-master:/var/lib/postgresql/data
     networks:
       - app-network
 
   db-replica:
+    container_name: db-replica
     build: 
       context: ./data/PostgreSQLdb/replica
-    container_name: db-replica
     environment:
       REPLICATE_FROM: db-master
     depends_on:
@@ -45,13 +45,13 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - replica-data:/var/lib/postgresql/data
+      - db-replica:/var/lib/postgresql/data
     networks:
       - app-network
 
 volumes:
-  db-data:
-  replica-data:
+  db-master:
+  db-replica:
 
 networks:
   app-network:

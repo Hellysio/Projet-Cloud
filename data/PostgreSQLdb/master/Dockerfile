@@ -9,6 +9,5 @@ ENV POSTGRES_PASSWORD=postgres
 COPY /master.sh /app/master.sh
 RUN chmod +x /app/master.sh
 
-
 EXPOSE 5432
 
