@@ -93,15 +93,16 @@ DATABASES = {
         'NAME': 'DescriptionDB',
         'USER': 'myuser',
         'PASSWORD': 'postgres',
-        'HOST': 'db-master',
+        'HOST': 'master_db', #name of the container switch to localhost if running locally else master_db
         'PORT': '5432',
     },
-    'replica': {
+         
+    'replica_db': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'DescriptionDB',
         'USER': 'myuser',
         'PASSWORD': 'postgres',
-        'HOST': 'db-replica',
+        'HOST': 'replica_db',
         'PORT': '5433',
     },
 }

@@ -8,4 +8,7 @@ class UploadedFiles(models.Model):
     date_of_upload = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.file.name
+        return self.filename
+    
+    class Meta:
+        db_table = 'Description_table' 
