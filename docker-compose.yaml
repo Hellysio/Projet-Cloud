@@ -29,12 +29,13 @@ services:
     build: 
       context: ./data/PostgreSQLdb/master
     ports:
-      - "5432:5432"
+      - "5433:5433"
     volumes:
-      #- /data/PostgreSQLdb:docker-entrypoint-initdb.d
       - master_db:/var/lib/postgresql/data
     networks:
       - app-network
+    depends_on:
+      - logspout
 
   replica_db:
     container_name: replica_db
@@ -44,10 +45,23 @@ services:
     depends_on:
       - master_db
     ports:
-      - "5433:5432"
+      - "5434:5433"
     volumes:
-      #- /data/PostgreSQLdb:docker-entrypoint-initdb.d
       - replica_db:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  logspout:
+    image: gliderlabs/logspout:master
+    container_name: logs_container
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/logs:/logs
+    environment:
+      - ROUTE_URIS=file:///logs 
+      - "SYSLOG_FORMAT=rfc3164"
+      - "LOGSPOUT=ignore"
     networks:
       - app-network
 

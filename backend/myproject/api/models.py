@@ -11,4 +11,4 @@ class UploadedFiles(models.Model):
         return self.filename
     
     class Meta:
-        db_table = 'Description_table' 
+        db_table = 'descriptiontb' 

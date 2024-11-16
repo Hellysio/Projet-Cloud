@@ -94,7 +94,7 @@ DATABASES = {
         'USER': 'myuser',
         'PASSWORD': 'postgres',
         'HOST': 'master_db', #name of the container switch to localhost if running locally else master_db
-        'PORT': '5432',
+        'PORT': '5433',
     },
          
     'replica_db': {
@@ -103,7 +103,7 @@ DATABASES = {
         'USER': 'myuser',
         'PASSWORD': 'postgres',
         'HOST': 'replica_db',
-        'PORT': '5433',
+        'PORT': '5434',
     },
 }
 
