@@ -10,6 +10,13 @@ services:
       - app-network 
     depends_on:
       - master_db
+    links:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: fluentd:24224
+        tag: httpd.access
 
   backend:
     container_name: django-app
@@ -22,7 +29,7 @@ services:
       - app-network
     depends_on:
       - master_db
-
+  ## database services
   master_db:
     container_name: master_db
     restart: always
@@ -35,7 +42,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - logspout
+      fluentd:
+        condition: service_healthy
 
   replica_db:
     container_name: replica_db
@@ -51,17 +59,44 @@ services:
     networks:
       - app-network
 
-  logspout:
-    image: gliderlabs/logspout:master
-    container_name: logs_container
-    restart: always
+  ## logs services
+  fluentd:
+    container_name: fluentd
+    build: ./fluentd
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /data/logs:/logs
+      - ./fluentd/conf:/fluentd/etc
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:24224"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
+    container_name: elasticsearch
     environment:
-      - ROUTE_URIS=file:///logs 
-      - "SYSLOG_FORMAT=rfc3164"
-      - "LOGSPOUT=ignore"
+      - "discovery.type=single-node"
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    networks:
+      - app-network
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:7.13.1
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
     networks:
       - app-network
 
