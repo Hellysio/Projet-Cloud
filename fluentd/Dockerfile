@@ -11,5 +11,5 @@ RUN apk add --no-cache --update --virtual .build-deps \
       rm -rf /var/cache/apk/*
 
 
-COPY ./conf/fluent.conf /fluentd/etc/
+COPY ./conf/fluentd.conf /fluentd/etc/
 USER fluent
