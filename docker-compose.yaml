@@ -10,6 +10,12 @@ services:
       - app-network 
     depends_on:
       - master_db
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async-connect: "true"
+        tag: "angular-app"
 
   backend:
     container_name: django-app
@@ -22,6 +28,12 @@ services:
       - app-network
     depends_on:
       - master_db
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async-connect: "true"
+        tag: "django-app"
 
   ## database services
   master_db:
@@ -35,14 +47,12 @@ services:
       - master_db:/var/lib/postgresql/data
     networks:
       - app-network
-    depends_on:
-      - fluentd
     logging:
       driver: "fluentd"
       options:
         fluentd-address: "localhost:24224"
         fluentd-async-connect: "true"
-        tag: "{{.Name}}"
+        tag: "master_db"
 
   replica_db:
     container_name: replica_db
@@ -57,17 +67,18 @@ services:
       - app-network
     depends_on:
       - master_db
-    
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async-connect: "true"
+        tag: "replica_db"
 
   ## log service
   fluentd:
-    image: fluentd/fluentd:latest
+    image: fluent/fluentd:latest
     container_name: fluentd
-    build:
-      context: ./fluentd
     volumes:
-      - /var/lib/docker/containers:/fluentd/log/containers ## where Docker stores logs Docker container
-      - ./data/logs:/output/ ## Log file
       - ./fluentd/conf:/fluentd/etc/ ## Config file
     logging:
       driver: "local"
@@ -75,9 +86,12 @@ services:
       - "24224:24224"
       - "5140:5140/udp"
     links:
-      - "elasticsearch"
+      - elasticsearch
     networks:
       - app-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
@@ -88,6 +102,12 @@ services:
       - "9200:9200"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.0
     container_name: kibana
