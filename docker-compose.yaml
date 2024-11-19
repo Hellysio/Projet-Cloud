@@ -79,6 +79,7 @@ services:
     image: fluent/fluentd:latest
     container_name: fluentd
     volumes:
+      - ./data/logs:/output/ ## Log file
       - ./fluentd/conf:/fluentd/etc/ ## Config file
     logging:
       driver: "local"
