@@ -79,8 +79,7 @@ services:
     image: fluent/fluentd:latest
     container_name: fluentd
     volumes:
-      - ./data/logs:/output/ ## Log file
-      - ./fluentd/conf:/fluentd/etc/ ## Config file
+      - ./fluentd/conf:/fluentd/etc/
     logging:
       driver: "local"
     ports:
@@ -93,7 +92,7 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-
+        
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
     container_name: elasticsearch
