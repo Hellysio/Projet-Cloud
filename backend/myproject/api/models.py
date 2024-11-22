@@ -1,6 +1,6 @@
 from django.db import models
 
-class UploadedFiles(models.Model):
+class descriptiontb(models.Model):
     id = models.AutoField(primary_key=True)
     filename = models.CharField(max_length=255, blank=True)
     file_size = models.IntegerField(default=0)

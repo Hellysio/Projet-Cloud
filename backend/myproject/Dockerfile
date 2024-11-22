@@ -10,5 +10,5 @@ COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 EXPOSE 8000
-ENTRYPOINT [ "/app/start.sh" ]
+ENTRYPOINT ["/app/start.sh"]
 
