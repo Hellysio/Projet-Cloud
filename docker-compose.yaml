@@ -44,7 +44,7 @@ services:
     ports:
       - "5433:5433"
     volumes:
-      - master_db:/var/lib/postgresql/data
+      - master_data:/var/lib/postgresql/data
     networks:
       - app-network
     logging:
@@ -60,9 +60,9 @@ services:
     build: 
       context: ./data/PostgreSQLdb/replica
     ports:
-      - "5434:5433"
+      - "5434:5434"
     volumes:
-      - replica_db:/var/lib/postgresql/data
+      - replica_data:/var/lib/postgresql/data
     networks:
       - app-network
     depends_on:
@@ -119,8 +119,8 @@ services:
       - app-network
 
 volumes:
-  master_db:
-  replica_db:
+  master_data:
+  replica_data:
 
 networks:
   app-network:
