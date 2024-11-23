@@ -10,12 +10,12 @@ services:
       - app-network 
     depends_on:
       - master_db
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "localhost:24224"
-        fluentd-async-connect: "true"
-        tag: "angular-app"
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: "localhost:24224"
+    #     fluentd-async-connect: "true"
+    #     tag: "angular-app"
 
   backend:
     container_name: django-app
@@ -28,12 +28,12 @@ services:
       - app-network
     depends_on:
       - master_db
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "localhost:24224"
-        fluentd-async-connect: "true"
-        tag: "django-app"
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: "localhost:24224"
+    #     fluentd-async-connect: "true"
+    #     tag: "django-app"
 
   ## database services
   master_db:
@@ -47,12 +47,12 @@ services:
       - master_data:/var/lib/postgresql/data
     networks:
       - app-network
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "localhost:24224"
-        fluentd-async-connect: "true"
-        tag: "master_db"
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: "localhost:24224"
+    #     fluentd-async-connect: "true"
+    #     tag: "master_db"
 
   replica_db:
     container_name: replica_db
@@ -67,60 +67,62 @@ services:
       - app-network
     depends_on:
       - master_db
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "localhost:24224"
-        fluentd-async-connect: "true"
-        tag: "replica_db"
+    # logging:
+    #   driver: "fluentd"
+    #   options:
+    #     fluentd-address: "localhost:24224"
+    #     fluentd-async-connect: "true"
+    #     tag: "replica_db"
 
-  ## log service
-  fluentd:
-    image: fluent/fluentd:latest
-    container_name: fluentd
-    volumes:
-      - ./fluentd/conf:/fluentd/etc/
-    logging:
-      driver: "local"
-    ports:
-      - "24224:24224"
-      - "5140:5140/udp"
-    links:
-      - elasticsearch
-    networks:
-      - app-network
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
+  # ## log service
+  # fluentd:
+  #   image: fluent/fluentd:latest
+  #   container_name: fluentd
+  #   volumes:
+  #     - ./fluentd/conf:/fluentd/etc/
+  #   logging:
+  #     driver: "local"
+  #   ports:
+  #     - "24224:24224"
+  #     - "5140:5140/udp"
+  #   links:
+  #     - elasticsearch
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
         
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.13.0
+  #   container_name: elasticsearch
+  #   environment:
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - app-network
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:9200"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.13.0
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    links:
-      - elasticsearch
-    networks:
-      - app-network
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.13.0
+  #   container_name: kibana
+  #   ports:
+  #     - "5601:5601"
+  #   links:
+  #     - elasticsearch
+  #   networks:
+  #     - app-network
 
 volumes:
   master_data:
+    driver: local
   replica_data:
+    driver: local
 
 networks:
   app-network:

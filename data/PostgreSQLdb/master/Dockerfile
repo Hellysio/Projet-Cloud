@@ -1,17 +1,21 @@
 FROM postgres:17-alpine
 
 WORKDIR /app
-
+ENV REPLICATION_ROLE=master
+ENV MASTER_HOST=master_db
+ENV MASTER_PORT=5433
 ENV POSTGRES_DB=DescriptionDB
-ENV POSTGRES_USER=myuser
+
+ENV REPLICATION_USER=replication
+
+ENV POSTGRES_USER=admin
 ENV POSTGRES_PASSWORD=postgres
+
 ENV PGDATA=/var/lib/postgresql/data
 
-COPY /conf/postgresql.conf /etc/postgresql/postgresql.conf
-CMD [ "postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
-
-COPY /master.sh /app/master.sh
-RUN chmod +x /app/master.sh
+COPY /master.sh /docker-entrypoint-initdb.d/
+COPY /rep.sh /docker-entrypoint-initdb.d/
 
 EXPOSE 5433
+
 

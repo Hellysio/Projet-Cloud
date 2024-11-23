@@ -1,29 +1,30 @@
 #!/bin/bash
+set -e
 
-# Initialize the database directory if it doesn't already exist
-if [ ! -d "$PGDATA" ]; then
-    initdb -D "$PGDATA"
-fi
+echo "max_connections = 5" >> "$PGDATA/postgresql.conf"
+echo "wal_level = hot_standby" >> "$PGDATA/postgresql.conf"
+echo "max_wal_senders = 5" >> "$PGDATA/postgresql.conf"
+echo "hot_standby = on" >> "$PGDATA/postgresql.conf"
 
-# Ensure the WAL archive directory exists (optional, based on config)
-mkdir -p /var/lib/postgresql/data/archive
+echo "host replication $REPLICATION_USER 0.0.0.0/0 md5" >> "$PGDATA/pg_hba.conf"
 
-# Configure access control in `pg_hba.conf`
-if ! grep -q "host replication all 0.0.0.0/0 md5" "$PGDATA/pg_hba.conf"; then
-    echo "host replication all 0.0.0.0/0 md5" >> "$PGDATA/pg_hba.conf"
-fi
+pg_ctl -D "$PGDATA" -m fast -w restart
 
-# Start PostgreSQL temporarily to set up the replication user
-pg_ctl -D "$PGDATA" -o "-c listen_addresses='*' -c port=5433" -w start
+# # Wait for PostgreSQL to start up
+# echo "Waiting for PostgreSQL to start..."
+# until pg_isready -h $POSTGRES_HOST -U $POSTGRES_USER -p $POSTGRES_PORT; do
+#   sleep 3
+# done
 
-# Create the replication user if it doesn't exist
-psql -U "$POSTGRES_USER" -c "DO \$\$ 
-BEGIN 
-   IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'repuser') THEN
-      CREATE ROLE repuser WITH REPLICATION LOGIN PASSWORD 'rep_pass';
-   END IF;
-END
-\$\$;"
+# # Create the replication user
+# echo "Creating replication user..."
+# psql -U $POSTGRES_USER -d $POSTGRES_DB -p $POSTGRES_PORT -c "CREATE USER replicationUser WITH REPLICATION PASSWORD '$POSTGRES_PASSWORD';"
 
-# Stop the PostgreSQL server
-pg_ctl -D "$PGDATA" -m fast stop
+# # Confirm user creation
+# psql -U $POSTGRES_USER -d $POSTGRES_DB -p $POSTGRES_PORT -c "\du"
+
+# # Exit the script
+# echo "Replication user created successfully."
+# pg_ctl -D "$PGDATA" -m fast -w reload
+
+
