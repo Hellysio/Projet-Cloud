@@ -11,7 +11,6 @@ ENV REPLICATION_USER=replication
 ENV POSTGRES_DB=DescriptionDB
 ENV POSTGRES_USER=admin
 ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_BACKUP=/var/lib/postgresql/data
 
 ENV PGDATA=/var/lib/postgresql/data
 

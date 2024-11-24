@@ -45,7 +45,6 @@ services:
       - "5433:5433"
     volumes:
       - master_data:/var/lib/postgresql/data
-      - master_backup:/mnt/server/archive
     networks:
       - app-network
     # logging:
@@ -64,7 +63,6 @@ services:
       - "5434:5434"
     volumes:
       - replica_data:/var/lib/postgresql/data
-      - replica_backup:/mnt/server/archive
     networks:
       - app-network
     depends_on:
@@ -124,10 +122,6 @@ volumes:
   master_data:
     driver: local
   replica_data:
-    driver: local
-  master_backup:
-    driver: local
-  replica_backup:
     driver: local
 
 networks:
