@@ -1,17 +1,18 @@
 #!/bin/bash
+set -e
 
-until pg_isready -h "$REPLICATE_FROM" -p 5433; do
-  echo "Waiting for master database to be ready..."
-  sleep 2
-done
+echo "port = $REPLICA_PORT" >> "$PGDATA/postgresql.conf"
+echo "listen_addresses = '*'" >> "$PGDATA/postgresql.conf"
 
-pg_ctl -D "$PGDATA" -m fast -w stop
+echo "max_connections = 5" >> "$PGDATA/postgresql.conf"
+echo "wal_level = replica" >> "$PGDATA/postgresql.conf"
+echo "max_wal_senders = 5" >> "$PGDATA/postgresql.conf"
+echo "hot_standby = on" >> "$PGDATA/postgresql.conf"
 
-rm -rf "$PGDATA"/*
-PGPASSWORD=postgres pg_basebackup -h "$REPLICATE_FROM" -D "$PGDATA" -U replica -v -P --wal-method=stream
+echo "host replication $REPLICATION_USER 0.0.0.0/0 md5" >> "$PGDATA/pg_hba.conf"
 
-echo "standby_mode = 'on'" > "$PGDATA/recovery.conf"
-echo "primary_conninfo = 'host=$REPLICATE_FROM port=5433 user=replica password=replica_pass'" >> "$PGDATA/recovery.conf"
-echo "trigger_file = '/tmp/failover.trigger'" >> "$PGDATA/recovery.conf"
+echo "POSTGRES_PORT: $REPLICA_PORT"
+echo "PGDATA: $PGDATA"
+echo "REPLICATION_USER: $REPLICATION_USER"
 
-pg_ctl -D "$PGDATA" -w start
+pg_ctl -D "$PGDATA" -o "-p $REPLICA_PORT" -m fast -w restart
