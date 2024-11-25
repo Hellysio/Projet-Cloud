@@ -1,0 +1,18 @@
+INFO: 
+# connect to master_db:
+docker exec -it master_db bash
+
+# connect inside: 
+psql -U admin -d DescriptionDB -p 5433
+
+# connect to replica_db:
+docker exec -it replica_db bash
+
+# connect inside: 
+psql -U admin -d DescriptionDB -p 5434
+
+#check the config file:
+psql -U admin -d DescriptionDB -c 'SHOW config_file' -p 5433
+cat /etc/postgresql/postgresql.conf
+
+cat /var/lib/postgresql/data/pg_hba.conf

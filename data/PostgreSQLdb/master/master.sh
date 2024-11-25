@@ -11,10 +11,6 @@ echo "hot_standby = on" >> "$PGDATA/postgresql.conf"
 
 echo "host replication $REPLICATION_USER 0.0.0.0/0 md5" >> "$PGDATA/pg_hba.conf"
 
-echo "POSTGRES_PORT: $MASTER_PORT"
-echo "PGDATA: $PGDATA"
-echo "REPLICATION_USER: $REPLICATION_USER"
-
 pg_ctl -D "$PGDATA" -o "-p $MASTER_PORT" -m fast -w restart
 
 
