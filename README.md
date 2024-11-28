@@ -8,17 +8,23 @@
       <a href="#How to run the project">How to run the project</a>
     </li>
     <li>
-    <a href="#Usage">Usage of the project</a>
+        <a href="#Usage">Usage of the project</a>
     </li>
-        <li>
-    <a href="#How it works">How it works</a>
+    <li>
+        <a href="#How it works">How it works</a>
+    </li>
+    <li>
+        <a href="#Acknoledgments">Acknoledgments</a>
     </li>
   </ol>
 </details>
 
 ## About the Project
 
-This is a project that is part of the Cloud and Virtualisation course. It's an Angular & Django Project based project that aims at discovering the basics of those frameworks. This project takes into input an image and returns a description of it made via the BLIP image captioning model hosted from hugging face. The project was made using docker, expecially docker compose which is a tool for running multi-container applications.
+This is a project that is part of the Cloud and Virtualization course. 
+It's an Angular & Django Project based project that aims at discovering the basics of those frameworks. 
+This project takes into input an image and returns a description of it made via the BLIP image captioning model hosted from hugging face. 
+The project was made using docker, especially docker compose which is a tool for running multi-container applications.
 
 ### The project was built using:
  [![Angular][Angular.io]][Angular-url]
@@ -26,6 +32,7 @@ This is a project that is part of the Cloud and Virtualisation course. It's an A
  [![hugging][hugging.io]][hugging-url]
  [![Docker][docker.io]][docker-url]
  [![Elastic][Elastic.io]][Elastic-url]
+ [![Fluentd][Fluentd.io]][Fluentd-url]
  [![Kibana][Kibana.io]][Kibana-url]
 
 ## How to run the project
@@ -58,7 +65,7 @@ The project also has the aim to test and understand how database replication is 
 Logs are also stored thanks to the EFK logging Stack. You can also check the logs of the project which are specifically sent to Kibana using Fluentd and Elasticsearch. 
 1. To access them, simply head to the following address:
 ```sh
-http://localhost:5601/app/home#/
+http://localhost:5601/app/discover#/
 ```
 2. And then create a data view :
 <div align="center">
@@ -86,16 +93,27 @@ docker-*
 
 ## How it works
 
-The project is a multi-container application. Each container is in the same network and communicates with each other. It can be represented for the User like this:  
+The project is a multi-container application. Each container is in the same network and communicates with each other. It can be represented for the user like this:  
 <div align="center">
     <a>
         <img src="images/diagram.png" alt="Logo" width="90%" height="90%">
     </a>
 </div>
 The user can make requests to static files hosted by Nginx. The static files are from the Angular container(front) and the container communicates with the Django container (back).
-The django container then stores data inside the master PostgreSQL database and the data will be replicated locally to the replica database in case of a failure from the master db. The data is stored on persistent volumes. Logs are monitored by a EFK logging Stack with a Fluentd, Kibana and Elasticsearch containers.
+The Django container then stores data inside the master PostgreSQL database and the data will be replicated locally to the replica database in case of a failure from the master database. 
+The data is stored on persistent volumes. Logs are monitored by a EFK logging Stack with a Fluentd, Kibana and Elasticsearch containers.
 
 <!-- ACKNOWLEDGMENTS -->
+
+## Acknoledgments 
+
+Being relatively new to Angular/Django and Docker 
+I primarly relied on official documentation but also on quality tutorials such as: 
+* [Youtube series about Docker development by Marcel Dempers](https://github.com/marcel-dempers/docker-development-youtube-series)
+* [Youtube video to learn how to Dockerize an Angular app using Nginx](https://youtu.be/-o5l6zFJ9_o)
+* [Tutorial on Postgres replication using Docker compose](https://github.com/madeindjs/docker-postgres-replication)
+
+
 [Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
 [Angular-url]: https://angular.io/
 
@@ -116,4 +134,7 @@ The django container then stores data inside the master PostgreSQL database and 
 
 [Nginx.io]: https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white
 [Nginx-url]: https://nginx.org/
+
+[Fluentd.io]: https://img.shields.io/badge/Fluentd-599CD0?style=for-the-badge&logo=fluentd&logoColor=white&labelColor=599CD0
+[Fluentd-url]: https://www.fluentd.org/
 
