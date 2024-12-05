@@ -37,6 +37,12 @@ The project was made using docker, especially docker compose which is a tool for
 
 ## How to run the project
 
+Before trying to install the project, make sure you have Docker Compose installed on your machine. You can install it with the following commands: (This project was made using Compose v2.29.7)
+```sh
+sudo apt-get update
+sudo apt-get install docker-compose-plugin
+```
+
 1. First you need to clone the repository by executing the following command:
 
 ```sh
