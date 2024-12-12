@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-feature-card',
   standalone: true,
-  imports: [CommonModule, FeatureCardComponent],
+  imports: [CommonModule],
   templateUrl: './feature-card.component.html',
   styleUrl: './feature-card.component.css'
 })

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ApiService {
-  //private apiUrl = 'http://localhost:8000/api/';
   private apiUrl = environment.API_BASE_URL + '/api/';
 
   constructor(private http: HttpClient) {}

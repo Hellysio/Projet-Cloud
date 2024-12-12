@@ -3,7 +3,7 @@ body {
     overflow-y: auto;
     min-height: 75rem;
     padding-top: 4.5rem;
-    background-image: url('assets/images/background.jpg');
+    background-image: url('../public/background.jpg');
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
